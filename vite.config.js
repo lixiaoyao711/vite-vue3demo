@@ -5,6 +5,10 @@ const { resolve } = require('path'); //必须要引入resolve
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: './',
+  build: {
+    rollupOptions: {},
+  },
   plugins: [
     vue(),
     // 配置插件
