@@ -12,24 +12,32 @@ import 'element-plus/dist/index.css';
 axios.defaults.baseURL = '/api';
 
 // 请求拦截器
-axios.interceptors.request.use(config => {
+axios.interceptors.request.use((config) => {
   return config;
 });
 // 响应拦截器
 axios.interceptors.response.use(
-  res => {
+  (res) => {
     // let message = Vue.prototype.$message
     if (res.data.code === 200) {
       return res.data;
     }
   },
-  err => {
+  (err) => {
     console.error(err);
     return Promise.reject(err);
   }
 );
 
-createApp(App)
+// 全局配置el-icon配置后不用每个模块导入
+import * as ElementPlusIconsVue from '@element-plus/icons-vue';
+
+const app = createApp(App);
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component);
+}
+
+app
   .use(ElementPlus, {
     locale: zhCn,
   })

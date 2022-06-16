@@ -9,6 +9,9 @@ export default defineConfig({
   build: {
     rollupOptions: {},
   },
+  define: {
+    'process.env': {},
+  },
   plugins: [
     vue(),
     // 配置插件
