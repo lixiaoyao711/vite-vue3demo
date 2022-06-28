@@ -1,5 +1,5 @@
 <template>
-  <div class="Home" @click="toPath">Home</div>
+  <div class="Home" @click="toPath">Home1</div>
 </template>
 <script setup>
 import { ref, reactive, computed, watch, onMounted, onUnmounted } from 'vue';
