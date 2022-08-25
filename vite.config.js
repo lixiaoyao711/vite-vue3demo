@@ -30,6 +30,14 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 5050,
+    proxy: {
+      '^/system': {
+        // 236 何奕, 126 玮琪, 147 本地测试， 137 柴思进，
+        target: 'http://192.168.1.137:9001',
+        // rewrite: (path) => path.replace(/^\/dev-api/, ''),
+        changeOrigin: true,
+      },
+    },
   },
   resolve: {
     //配置可忽略的后缀名
