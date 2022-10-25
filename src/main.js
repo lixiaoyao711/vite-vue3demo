@@ -11,6 +11,13 @@ import 'element-plus/dist/index.css';
 
 axios.defaults.baseURL = '/api';
 
+const app = createApp(App);
+
+// 注册全局组件
+import Index from '@/components/index';
+
+app.component('Index', Index);
+
 // 请求拦截器
 axios.interceptors.request.use((config) => {
   return config;
@@ -32,7 +39,6 @@ axios.interceptors.response.use(
 // 全局配置el-icon配置后不用每个模块导入
 import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 
-const app = createApp(App);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component);
 }
