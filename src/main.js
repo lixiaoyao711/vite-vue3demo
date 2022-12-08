@@ -9,7 +9,7 @@ import ElementPlus from 'element-plus';
 import zhCn from 'element-plus/es/locale/lang/zh-cn';
 import 'element-plus/dist/index.css';
 
-axios.defaults.baseURL = '/api';
+axios.defaults.baseURL = import.meta.env.VITE_APP_API_BASE_URL;
 
 const app = createApp(App);
 
@@ -20,6 +20,8 @@ app.component('Index', Index);
 
 // 请求拦截器
 axios.interceptors.request.use((config) => {
+  // 设置请求头
+  config.headers.common['Authorization'] = localStorage.token || '';
   return config;
 });
 // 响应拦截器

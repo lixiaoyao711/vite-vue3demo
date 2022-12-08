@@ -10,50 +10,35 @@ export function throttle(func, delay) {
   };
 }
 
-//中国标准时间转换年月日
-export function formatDateTime(date) {
-  var y = date.getFullYear();
-  var m = date.getMonth() + 1;
-  m = m < 10 ? '0' + m : m;
-  var d = date.getDate();
-  d = d < 10 ? '0' + d : d;
-  var h = date.getHours();
-  var minute = date.getMinutes();
-  minute = minute < 10 ? '0' + minute : minute;
-  return y + '-' + m + '-' + d;
-  // return y + '-' + m + '-' + d + ' ' + h + ':' + minute;
-}
-
-//中国标准时间转换年月日时分秒
-export function formatDateTimeMinute(date) {
-  var y = date.getFullYear();
-  var m = date.getMonth() + 1;
-  m = m < 10 ? '0' + m : m;
-  var d = date.getDate();
-  d = d < 10 ? '0' + d : d;
-  var h = date.getHours();
-  var minute = date.getMinutes();
-  minute = minute < 10 ? '0' + minute : minute;
-  var s = date.getSeconds();
-  s = s < 10 ? '0' + s : s;
-  // return y + '-' + m + '-' + d;
-  return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + s;
-}
-
-//中国标准时间转换年月日时分
-export function formatDateTimeSS(date) {
-  var y = date.getFullYear();
-  var m = date.getMonth() + 1;
-  m = m < 10 ? '0' + m : m;
-  var d = date.getDate();
-  d = d < 10 ? '0' + d : d;
-  var h = date.getHours();
-  var minute = date.getMinutes();
-  minute = minute < 10 ? '0' + minute : minute;
-  var s = date.getSeconds();
-  s = s < 10 ? '0' + s : s;
-  // return y + '-' + m + '-' + d;
-  return y + '-' + m + '-' + d + ' ' + h + ':' + minute;
+/**
+ * @name: 自动转换 根据fmt返回时间类型 （yyyy:MM:dd hh:mm:ss 自动转换）
+ * 例子：1982-3-27  yy年M月d日 82年3月27日
+ * 例子：1982-3-7  yy年MM月dd日 82年03月07日
+ * @param {*} timeDate
+ * @param {*} fmt
+ */
+ export function timeFormat(timeDate, fmt = 'yyyy-MM-dd hh:mm:ss') {
+  if (!timeDate) {
+    return '';
+  }
+  if (Number(timeDate)) {
+    timeDate = Number(timeDate);
+  }
+  let time = new Date(timeDate); //debugger;
+  let o = {
+    'M+': time.getMonth() + 1, //月份
+    'd+': time.getDate(), //日
+    'h+': time.getHours(), //小时
+    'm+': time.getMinutes(), //分
+    's+': time.getSeconds(), //秒
+    'q+': Math.floor((time.getMonth() + 3) / 3), //季度
+    S: time.getMilliseconds(), //毫秒
+  };
+  if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (time.getFullYear() + '').substr(4 - RegExp.$1.length));
+  for (let k in o)
+    if (new RegExp('(' + k + ')').test(fmt))
+      fmt = fmt.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ('00' + o[k]).substr(('' + o[k]).length));
+  return fmt;
 }
 
 //字符串yyyy-mm-dd转换时间戳
@@ -66,7 +51,7 @@ export function countTime(time, day) {
   time = new Date(time).getTime() / 1000;
   day = day * 86400;
   //中国标准时间转换年月日
-  return formatDateTime(new Date((time - day) * 1000));
+  return timeFormat(new Date((time - day) * 1000));
 }
 // 生成随机的唯一id
 export function guid() {
@@ -89,26 +74,7 @@ export function getQueryVariable(variable) {
   return false;
 }
 
-// 时间戳转换成年月日，时分秒：
-export function formatDate(value) {
-  if (typeof value == 'undefined') {
-      return '';
-  } else {
-      let date = new Date(parseInt(value));
-      let y = date.getFullYear();
-      let MM = date.getMonth() + 1;
-      MM = MM < 10 ? '0' + MM : MM;
-      let d = date.getDate();
-      d = d < 10 ? '0' + d : d;
-      let h = date.getHours();
-      h = h < 10 ? '0' + h : h;
-      let m = date.getMinutes();
-      m = m < 10 ? '0' + m : m;
-      let s = date.getSeconds();
-      s = s < 10 ? '0' + s : s;
-      return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
-  }
-}
+
 
 //定时检查tokne是否过期
 export const checkTokenTime = (expTime, checkTime) => {
